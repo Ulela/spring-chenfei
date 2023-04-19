@@ -1,9 +1,40 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Example user template template
-### Example user template
 
-# IntelliJ project files
+
+### IntelliJ IDEA ###
 .idea
+*.iws
 *.iml
-out
-gen
+*.ipr
+modules.xml
+
+target/
+
+**/.idea
+**/*.iws
+**/*.iml
+**/*.ipr
+**/modules.xml
+
+
+**/mvnw
+**/mvnw.cmd
+**/.mvn
+**/target/
+**/.gitignore
+
+### Maven ###
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+### Java ###
+# Compiled class file
+*.class
+
+/spring-step-3/
