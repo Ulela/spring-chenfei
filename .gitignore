@@ -36,5 +36,3 @@ buildNumber.properties
 ### Java ###
 # Compiled class file
 *.class
-
-/spring-step-3/
