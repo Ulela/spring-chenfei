@@ -12,23 +12,35 @@ import java.lang.reflect.Constructor;
  **/
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory{
 
-    private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
+    private final InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
     private InstantiationStrategy getInstantiationStrategy() {
         return instantiationStrategy;
     }
 
     @Override
-    Object createBean(String beanName, BeanDefinition beanDefinition, Object[] args) throws BeansException {
+    protected Object createBean(String beanName, BeanDefinition beanDefinition, Object[] args) throws BeansException {
+        Object bean = null;
+        try {
+            bean = createBeanInstance(beanDefinition, beanName, args);
+        } catch (Exception e) {
+            throw new BeansException("Instantiation of bean failed", e);
+        }
 
-        Constructor<?> cotr = null;
-        Constructor<?>[] declaredConstructors = beanDefinition.getBeanClass().getDeclaredConstructors();
-        for (Constructor<?> constructor : declaredConstructors) {
-            if (constructor.getParameterTypes().length == args.length) {
-                cotr = constructor;
+        addSingleton(beanName, bean);
+        return bean;
+    }
+
+    protected Object createBeanInstance(BeanDefinition beanDefinition, String beanName, Object[] args) {
+        Constructor<?> constructorToUse = null;
+        Class<?> beanClass = beanDefinition.getBeanClass();
+        Constructor<?>[] declaredConstructors = beanClass.getDeclaredConstructors();
+        for (Constructor<?> ctor : declaredConstructors) {
+            if (null != args && ctor.getParameterTypes().length == args.length) {
+                constructorToUse = ctor;
                 break;
             }
         }
-        return getInstantiationStrategy().instantiate(beanDefinition, beanName, cotr, args);
+        return getInstantiationStrategy().instantiate(beanDefinition, beanName, constructorToUse, args);
     }
 
 
